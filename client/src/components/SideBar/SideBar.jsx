@@ -1,14 +1,10 @@
-// Filename - components/Sidebar.js
-
 import { useState } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import { Icon } from '@mui/material';
 import * as FaIcons from "react-icons/fa";
 import * as AiIcons from "react-icons/ai";
 import { SidebarData } from "./SidebarData";
 import SubMenu from "./SubMenu";
-import { IconContext } from "react-icons/lib";
 import {
   HomeIcon,
   LayoutIcon,
@@ -56,7 +52,7 @@ const SidebarWrap = styled.div`
     width: 100%;
 `;
 
-const Sidebar = () => {
+function Sidebar() {
   const [sidebar, setSidebar] = useState(false);
 
   const showSidebar = () => setSidebar(!sidebar);
