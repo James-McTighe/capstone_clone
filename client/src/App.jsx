@@ -1,13 +1,16 @@
-import { useState } from 'react'
 import './App.css'
-import Sidebar from './components/SideBar/SideBar'
+import Navbar from './components/NavBar/Navbar.jsx'
+import { Routes, Route } from 'react-router-dom'
+import Home from './pages/Home.jsx'
 
 function App() {
-
+  document.title = "MSSE Capstone Clone"
   return (
     <>
-      <Sidebar />
-      <h1>hello world</h1>
+      <Navbar />
+      <Routes>
+        <Route path='/' element={<Home />} />
+      </Routes>
     </>
   )
 }
