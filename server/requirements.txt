@@ -9,3 +9,6 @@ Flask-WTF
 matplotlib
 email-validator
 flask-cors
+plotly
+pandas
+numpy
