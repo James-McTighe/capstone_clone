@@ -1,4 +1,5 @@
 import Infocard from '../components/InfoCard.jsx';
+import { Carousel } from '@material-tailwind/react';
 
 function Home() {
   return (
