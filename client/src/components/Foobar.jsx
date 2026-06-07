@@ -7,25 +7,23 @@ const Plot = createPlot(Plotly);
 function Foobar() {
   return (
     <>
-      <div className='border-amber-500 border-4 mx-4 rounded-md'>
-        <Plot
-          data={[
-            {
-              // x: [1, 2, 3, 4, 6, 8, 10, 12, 14, 16, 18],
-              // y: [32, 37, 40.5, 43, 49, 54, 59, 63.5, 69.5, 73, 74],
-              x: ["January", "February", "March"],
-              y: [1, 2, 4],
-              mode: "bar",
-              type: "bar",
-            },
-          ]}
-          layout={{
-            title: "Growth Rate in Boys",
-            xaxis: { title: "Age (years)" },
-            yaxis: { title: "Height (inches)" },
-          }}
-        />
-      </div>
+      <Plot
+        data={[
+          {
+            x: [1, 2, 3, 4, 6, 8, 10, 12, 14, 16, 18],
+            y: [1, 2, 10, 13, 20, 22, 59, 24, 20, 10, 0],
+            // x: ["January", "February", "March"],
+            // y: [1, 2, 4],
+            mode: "lines+markers",
+            type: "scatter",
+          },
+        ]}
+        layout={{
+          title: { text: "Concentration at Timepoints" },
+          xaxis: { title: { text: "Timepoint" } },
+          yaxis: { title: { text: "Peak AP" } },
+        }}
+      />
     </>
   )
 }
