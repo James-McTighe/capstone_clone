@@ -16,7 +16,7 @@ function Navbar() {
           <NavLink className="navbar__link" to="/analysis">
             Rate Calculation
           </NavLink>
-          <NavLink className="navbar__link" to="/utilities">
+          <NavLink className="navbar__link" to="/utils">
             Utilities
           </NavLink>
         </div>
