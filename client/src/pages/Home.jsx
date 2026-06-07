@@ -1,6 +1,7 @@
 import React from 'react';
 import { useState } from 'react';
 import { BookOpen, Check } from 'lucide-react';
+import LinkButton from '../components/Buttons/LinkButton';
 
 import HelpModal from '../components/HowToUse';
 
@@ -28,7 +29,7 @@ function Home() {
         rounded-xl shadow-sm 
         hover:bg-slate-850 hover:text-white transition-all hover:border-slate-700"
       >
-        <BookOpen className='w-4 h-4 text-indigo-400'/>
+        <BookOpen className='w-4 h-4 text-indigo-400' />
         View Run Instructions
       </button>
     )
@@ -54,11 +55,14 @@ function Home() {
       {/* Main Content Area */}
       <main className="max-w-4xl mx-auto px-6 py-12">
         <section className="bg-white rounded-2xl border border-slate-200 p-8 shadow-sm">
-          <div className="mb-6">
+          <div>
             <h3 className="text-xl font-bold text-slate-900 tracking-tight">
               About the application
             </h3>
             <InstructionsButton />
+            {/* <div className='flex gap-4 m-4'> */}
+            {/*   <LinkButton label='one' /> */}
+            {/* </div> */}
             <p className="mt-2 text-base text-slate-600 leading-relaxed">
               This application is engineered to streamline and automate the process of visualizing
               and analyzing kinetic data derived from High-Performance Liquid Chromatography (HPLC) experiments.
@@ -82,7 +86,7 @@ function Home() {
                   <Check
                     className="h-5 w-5 text-indigo-600 shrink-0 mt-0.5"
                   />
-                  
+
                   <span className="text-sm font-medium text-slate-700">{feature}</span>
                 </li>
               ))}
