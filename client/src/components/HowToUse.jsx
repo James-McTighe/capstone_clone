@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { ChevronLeft, ChevronRight, X } from 'lucide-react';
 
 // Structured Help Content
 const INSTRUCTION_SLIDES = [
@@ -92,8 +93,9 @@ function HelpModal({ isOpen, onClose }) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm antialiased">
       {/* Modal Container */}
-      <div className="relative flex flex-col w-full max-w-2xl bg-white border shadow-2xl rounded-2xl border-slate-200 max-h-[85vh] overflow-hidden">
-        
+      <div className="relative flex flex-col w-full max-w-2xl bg-white border 
+        shadow-2xl rounded-2xl border-slate-200 max-h-[85vh] overflow-hidden">
+
         {/* Header Banner */}
         <header className="px-6 py-5 border-b border-slate-100 bg-slate-50 flex justify-between items-center">
           <div>
@@ -104,14 +106,12 @@ function HelpModal({ isOpen, onClose }) {
               User Instructions
             </div>
           </div>
-          <button 
+          <button
             onClick={onClose}
             className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors"
             aria-label="Close modal"
           >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-            </svg>
+            <X />
           </button>
         </header>
 
@@ -203,9 +203,7 @@ function HelpModal({ isOpen, onClose }) {
             onClick={prevSlide}
             className="flex items-center gap-1 px-3 py-1.5 text-xs font-semibold text-slate-600 hover:text-slate-900 bg-white border border-slate-200 rounded-lg shadow-sm hover:bg-slate-50 transition-colors"
           >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
-            </svg>
+            <ChevronLeft className="w-5 h-5" />
             Back
           </button>
 
@@ -215,9 +213,8 @@ function HelpModal({ isOpen, onClose }) {
               <button
                 key={index}
                 onClick={() => setCurrentSlide(index)}
-                className={`h-2 rounded-full transition-all duration-300 ${
-                  index === currentSlide ? 'w-6 bg-indigo-600' : 'w-2 bg-slate-300 hover:bg-slate-400'
-                }`}
+                className={`h-2 rounded-full transition-all duration-300 ${index === currentSlide ? 'w-6 bg-indigo-600' : 'w-2 bg-slate-300 hover:bg-slate-400'
+                  }`}
                 aria-label={`Go to slide ${index + 1}`}
               />
             ))}
@@ -228,9 +225,7 @@ function HelpModal({ isOpen, onClose }) {
             className="flex items-center gap-1 px-3 py-1.5 text-xs font-semibold text-white bg-indigo-600 rounded-lg shadow-sm hover:bg-indigo-700 transition-colors"
           >
             Next
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
-            </svg>
+            <ChevronRight className='w-5 h-5' />
           </button>
         </footer>
 
