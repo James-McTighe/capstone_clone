@@ -97,12 +97,12 @@ function HelpModal({ isOpen, onClose }) {
         {/* Header Banner */}
         <header className="px-6 py-5 border-b border-slate-100 bg-slate-50 flex justify-between items-center">
           <div>
-            <h2 className="text-xs font-semibold tracking-wider text-indigo-600 uppercase">
+            <div className="text-xs font-semibold tracking-wider text-indigo-600 uppercase">
               Application Documentation
-            </h2>
-            <h1 className="text-xl font-bold text-slate-900 mt-0.5">
+            </div>
+            <div className="text-xl font-bold text-slate-900 mt-0.5">
               User Instructions
-            </h1>
+            </div>
           </div>
           <button 
             onClick={onClose}
