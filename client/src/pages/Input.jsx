@@ -1,7 +1,7 @@
 
 function InitialInput() {
   return (
-    <p>hello world</p>
+    <p>hello from the input page</p>
   )
 }
 

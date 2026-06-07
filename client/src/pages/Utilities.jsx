@@ -1,7 +1,7 @@
 
 function Utilities() {
   return (
-    <p>hello world</p>
+    <p>hello from the utils page</p>
   )
 }
 
