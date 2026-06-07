@@ -1,5 +1,7 @@
 import React from 'react';
 
+import HelpModal from '../components/HowToUse';
+
 function Home() {
   const features = [
     "Generating plate layouts from reaction conditions",
@@ -35,7 +37,7 @@ function Home() {
         <section className="bg-white rounded-2xl border border-slate-200 p-8 shadow-sm">
           <div className="mb-6">
             <h3 className="text-xl font-bold text-slate-900 tracking-tight">
-              About the Software
+              About the application
             </h3>
             <p className="mt-2 text-base text-slate-600 leading-relaxed">
               This application is engineered to streamline and automate the process of visualizing 
