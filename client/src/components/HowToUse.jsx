@@ -135,7 +135,8 @@ function HelpModal({ isOpen, onClose }) {
               <ol className="space-y-2.5">
                 {slide.items.map((item, index) => (
                   <li key={index} className="flex items-start gap-3 text-sm text-slate-600 leading-relaxed">
-                    <span className="flex items-center justify-center w-5 h-5 text-xs font-bold text-indigo-600 rounded-full bg-indigo-50 shrink-0 mt-0.5">
+                    <span className="flex items-center justify-center w-5 h-5 text-xs font-bold 
+                      text-indigo-600 rounded-full bg-indigo-50 shrink-0 mt-0.5">
                       {index + 1}
                     </span>
                     <span>{item}</span>
@@ -155,7 +156,8 @@ function HelpModal({ isOpen, onClose }) {
                     <ol className="space-y-2">
                       {sect.items.map((item, itemIdx) => (
                         <li key={itemIdx} className="flex items-start gap-3 text-sm text-slate-600 leading-relaxed">
-                          <span className="flex items-center justify-center w-5 h-5 text-xs font-bold text-indigo-600 rounded-full bg-indigo-50 shrink-0 mt-0.5">
+                          <span className="flex items-center justify-center w-5 h-5 text-xs 
+                            font-bold text-indigo-600 rounded-full bg-indigo-50 shrink-0 mt-0.5">
                             {itemIdx + 1}
                           </span>
                           <span>{item}</span>
@@ -201,7 +203,9 @@ function HelpModal({ isOpen, onClose }) {
         <footer className="px-6 py-4 bg-slate-50 border-t border-slate-100 flex items-center justify-between">
           <button
             onClick={prevSlide}
-            className="flex items-center gap-1 px-3 py-1.5 text-xs font-semibold text-slate-600 hover:text-slate-900 bg-white border border-slate-200 rounded-lg shadow-sm hover:bg-slate-50 transition-colors"
+            className="flex items-center gap-1 px-3 py-1.5 text-xs font-semibold 
+            text-slate-600 hover:text-slate-900 bg-white border border-slate-200 rounded-lg 
+            shadow-sm hover:bg-slate-50 transition-colors"
           >
             <ChevronLeft className="w-5 h-5" />
             Back
