@@ -27,7 +27,7 @@ function Home() {
         className="mt-6 inline-flex items-center gap-2 px-4 py-2 
         text-sm font-semibold text-slate-200 bg-slate-900 border border-slate-800 
         rounded-xl shadow-sm 
-        hover:bg-slate-850 hover:text-white transition-all hover:border-slate-700"
+        hover:bg-emerald-500 hover:text-black transition-all hover:border-slate-700"
       >
         <BookOpen className='w-4 h-4 text-indigo-400' />
         View Run Instructions
@@ -59,10 +59,9 @@ function Home() {
             <h3 className="text-xl font-bold text-slate-900 tracking-tight">
               About the application
             </h3>
-            <InstructionsButton />
-            {/* <div className='flex gap-4 m-4'> */}
-            {/*   <LinkButton label='one' /> */}
-            {/* </div> */}
+            <div className='mb-6'>
+              <InstructionsButton />
+            </div>
             <p className="mt-2 text-base text-slate-600 leading-relaxed">
               This application is engineered to streamline and automate the process of visualizing
               and analyzing kinetic data derived from High-Performance Liquid Chromatography (HPLC) experiments.
