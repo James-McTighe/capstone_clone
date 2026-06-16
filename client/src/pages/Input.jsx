@@ -25,7 +25,7 @@ function InitialInput() {
     if (selectedFile) {
       return (
         <div className="mt-6 p-4 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-600">
-          <h2 className="text-base font-semibold text-gray-800 mb-2">File Details:</h2>
+          <h3 className="text-base font-semibold text-gray-800 mb-2">File Details:</h3>
           <p><span className="font-medium text-gray-700">File Name:</span> {selectedFile.name}</p>
           <p><span className="font-medium text-gray-700">File Type:</span> {selectedFile.type || 'Unknown'}</p>
           {selectedFile.lastModifiedDate && (
@@ -48,7 +48,7 @@ function InitialInput() {
   return (
     <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-xl shadow-md border border-gray-100 font-sans">
       <header className="mb-6 text-center">
-        <h1 className="text-2xl font-bold text-gray-900 tracking-tight">File Upload</h1>
+        <h3 className="text-2xl font-bold text-gray-900 tracking-tight">File Upload</h3>
         <p className="text-sm text-gray-500 mt-1">Upload files securely via React</p>
       </header>
 
