@@ -1,8 +1,9 @@
-import axios from 'axios';
-import React, { useState } from 'react';
+import api from '../api/axios';
+import { useState } from 'react';
 
 function InitialInput() {
   const [selectedFile, setSelectedFile] = useState(null);
+  const [statusMessage, setStatusMessage] = useState('');
 
   const onFileChange = (event) => {
     setSelectedFile(event.target.files[0]);
@@ -17,8 +18,18 @@ function InitialInput() {
       selectedFile,
       selectedFile.name
     );
-    console.log(selectedFile);
-    axios.post("api/uploadfile", formData);
+    console.log('Uploading file:', selectedFile.name);
+    setStatusMessage('Uploading file...');
+
+    api.post("/uploadfile", formData)
+      .then((response) => {
+        console.log('Upload response:', response.data);
+        setStatusMessage(`Uploaded: ${response.data.filename}`);
+      })
+      .catch((error) => {
+        console.error('Upload failed:', error);
+        setStatusMessage('Upload failed. Check the server logs.');
+      });
   };
 
   const fileData = () => {
@@ -81,6 +92,10 @@ function InitialInput() {
           Upload!
         </button>
       </div>
+
+      {statusMessage && (
+        <p className="mt-4 text-center text-sm text-gray-600">{statusMessage}</p>
+      )}
 
       {fileData()}
     </div>
