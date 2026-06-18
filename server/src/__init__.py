@@ -1,19 +1,29 @@
+import os
+from pathlib import Path
+import json
+from logging.config import dictConfig
+
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
-from flask_login import LoginManager
-from flask_mail import Mail
-from sqlalchemy import inspect, text
-from src.config import Config
 from flask_cors import CORS
-import logging
+from flask_sqlalchemy import SQLAlchemy
+
+from src.config import Config
 
 db = SQLAlchemy()
 bcrypt = Bcrypt()
 
 
 def create_app(config_class=Config):
-    logging.getLogger('werkzeug').setLevel(logging.INFO)
+    current_dir = Path(__file__).parent
+    log_config_path = current_dir / "logging_config.json"
+
+    Path('logs').mkdir(exist_ok=True)
+
+    with open(log_config_path, 'r') as file:
+        config = json.load(file)
+        dictConfig(config)
+
     app = Flask(__name__)
     CORS(app)
     app.config.from_object(config_class)
