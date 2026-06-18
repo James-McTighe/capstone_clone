@@ -1,6 +1,7 @@
 import os
 from pathlib import Path
 import json
+import logging
 from logging.config import dictConfig
 
 from flask import Flask
@@ -9,24 +10,25 @@ from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 
 from src.config import Config
+from src.log_utils import ColoredFormatter
 
 db = SQLAlchemy()
 bcrypt = Bcrypt()
 
 
 def create_app(config_class=Config):
-    current_dir = Path(__file__).parent
-    log_config_path = current_dir / "logging_config.json"
-
-    Path('logs').mkdir(exist_ok=True)
-
-    with open(log_config_path, 'r') as file:
-        config = json.load(file)
-        dictConfig(config)
-
     app = Flask(__name__)
     CORS(app)
     app.config.from_object(config_class)
+
+    app.logger.handlers.clear()
+    console_handler = logging.StreamHandler()
+    console_handler.setFormatter(ColoredFormatter())
+    app.logger.addHandler(console_handler)
+    logging.getLogger('werkzeug').addHandler(console_handler)
+
+    app.logger.propagate = False
+    logging.getLogger('werkzeug').propagate = False
     
     db.init_app(app)
     bcrypt.init_app(app)
