@@ -1,13 +1,21 @@
-from flask import Blueprint, jsonify
-import json
-from pathlib import Path
-import plotly.express as px
-import plotly.io as pio
-import pandas as pd
-import numpy as np
+import logging
 
-input = Blueprint("input", __name__)
+from flask import Blueprint, jsonify, request
 
-@input.route("/api/uploadfile", methods=["GET", "POST"])
+logger = logging.getLogger(__name__)
+input_bp = Blueprint("input", __name__)
+
+
+@input_bp.route("/api/uploadfile", methods=["POST"])
 def raw_data_input():
-    pass
+    file = request.files.get("myFile")
+    if not file:
+        logger.warning("Upload request received without a file")
+        return jsonify({"error": "No file uploaded"}), 400
+
+    logger.info("Upload received: filename=%s content_type=%s", file.filename, file.content_type)
+
+    return jsonify({
+        "message": "File received",
+        "filename": file.filename
+    }), 200
