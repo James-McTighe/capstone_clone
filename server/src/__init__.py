@@ -22,17 +22,17 @@ def create_app(config_class=Config):
     app.config.from_object(config_class)
 
     app.logger.handlers.clear()
+    app.logger.setLevel(logging.INFO)
+    app.logger.propagate = False
+
     console_handler = logging.StreamHandler()
     console_handler.setFormatter(ColoredFormatter())
     app.logger.addHandler(console_handler)
-    logging.getLogger('werkzeug').addHandler(console_handler)
+    logging.getLogger("werkzeug").setLevel(logging.INFO)
+    logging.getLogger("werkzeug").addHandler(console_handler)
 
-    app.logger.propagate = False
-    logging.getLogger('werkzeug').propagate = False
-    
     db.init_app(app)
     bcrypt.init_app(app)
-
 
     with app.app_context():
         db.create_all()
