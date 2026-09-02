@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify
+from fastapi import APIRouter
 import json
 from pathlib import Path
 import plotly.express as px
@@ -6,16 +6,16 @@ import plotly.io as pio
 import pandas as pd
 import numpy as np
 
-main = Blueprint("main", __name__)
+main_router = APIRouter(prefix="/api/", tags=["Authentication"])
 
-@main.route('/api/data/home', methods=["GET"])
+@main_router.get('/home')
 def get_home_data():
     HOME_DATA_PATH = Path(__file__).with_name('home-content.json')
     with HOME_DATA_PATH.open('r', encoding='utf-8') as file:
         data = json.load(file)
     return jsonify(data)
 
-@main.route('/api/chart-data', methods=['GET'])
+@main_router.get('/api/chart-data')
 def get_chart_data():
     np.random.seed(42)
     times = pd.date_range(start="2026-01-01", periods=100, freq="h")
