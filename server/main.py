@@ -1,6 +1,5 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from src import create_app
 
 app = FastAPI(
     title="Kinetics App",
