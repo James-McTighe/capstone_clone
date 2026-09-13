@@ -1,19 +1,24 @@
+from fastapi import APIRouter, File, UploadFile, HTTPException
+from fastapi.responses import JSONResponse
 import logging
 
-from flask import Blueprint, jsonify, request, current_app
+# Set up logging configuration
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
-input_bp = Blueprint("input", __name__)
+router = APIRouter()
 
+@router.post("/api/uploadfile")
+async def raw_data_input(file: UploadFile = File(...)):
+    if file.filename == "":
+        raise HTTPException(status_code=400, detail="Empty filename")
 
-@input_bp.route("/api/uploadfile", methods=["POST"])
-def raw_data_input():
-    file = request.files.get("myFile")
-    if not file:
-        return jsonify({"error": "No file uploaded"}), 400
+    logger.info(f"Upload received: filename={file.filename}, content_type={file.content_type}")
 
-    current_app.logger.info("Upload received: filename=%s content_type=%s", file.filename, file.content_type)
-
-    return jsonify({
-        "message": "File received",
-        "filename": file.filename
-    }), 200
+    return JSONResponse(
+        status_code=200,
+        content={
+            "message": "File received",
+            "filename": file.filename
+        }
+    )
