@@ -4,7 +4,8 @@ services:
       context: ./server
       dockerfile: Dockerfile
     ports:
-      - 5000:5000
+      # Uvicorn listens on 8000 inside the container; expose it as host port 5000.
+      - 5000:8000
     volumes:
       - ./server:/app
     environment:
@@ -23,7 +24,8 @@ services:
     ports:
       - 5173:5173
     environment:
-      - VITE_API_PROXY_TARGET=http://server:5000
+      # Docker's service DNS uses the internal container port, not the host port.
+      - VITE_API_PROXY_TARGET=http://server:8000
     volumes:
       - ./client:/app
       - /app/node_modules
