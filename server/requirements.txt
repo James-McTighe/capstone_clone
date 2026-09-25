@@ -1,4 +1,6 @@
 fastapi
+python-multipart
+python-dotenv
 uvicorn
 psycopg2-binary
 sqlalchemy
@@ -10,3 +12,5 @@ pydantic[email]
 plotly
 pandas
 numpy
+openpyxl
+xlrd

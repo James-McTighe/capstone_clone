@@ -3,33 +3,50 @@ import { useState } from 'react';
 
 function InitialInput() {
   const [selectedFile, setSelectedFile] = useState(null);
+  const [selectedConditionsFile, setSelectedConditionsFile] = useState(null);
+  // Matches the source app's two data paths: ChemStation HPLC or processed data.
+  const [sourceType, setSourceType] = useState('preprocessed');
   const [statusMessage, setStatusMessage] = useState('');
+  // Prevents duplicate requests while the selected file is being uploaded.
+  const [isUploading, setIsUploading] = useState(false);
 
   const onFileChange = (event) => {
-    setSelectedFile(event.target.files[0]);
+    setSelectedFile(event.target.files[0] || null);
+    setStatusMessage('');
   };
 
-  const onFileUpload = () => {
-    if (!selectedFile) return;
-    
+  const onFileUpload = async () => {
+    if (!selectedFile || !selectedConditionsFile) return;
+
     const formData = new FormData();
+    // The field name must match the FastAPI alias and the original Flask route.
     formData.append(
       "myFile",
       selectedFile,
       selectedFile.name
     );
-    console.log('Uploading file:', selectedFile.name);
+    formData.append(
+      "conditionsFile",
+      selectedConditionsFile,
+      selectedConditionsFile.name
+    );
     setStatusMessage('Uploading file...');
+    setIsUploading(true);
 
-    api.post("/uploadfile", formData)
-      .then((response) => {
-        console.log('Upload response:', response.data);
-        setStatusMessage(`Uploaded: ${response.data.filename}`);
-      })
-      .catch((error) => {
-        console.error('Upload failed:', error);
-        setStatusMessage('Upload failed. Check the server logs.');
+    try {
+      const response = await api.post('/uploadfile', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+        // The backend uses this value to validate the permitted extension.
+        params: { source: sourceType },
       });
+      setStatusMessage(`Processed ${response.data.rows} rows successfully.`);
+    } catch (error) {
+      setStatusMessage(
+        error.response?.data?.detail || 'Upload failed. Check the server logs.'
+      );
+    } finally {
+      setIsUploading(false);
+    }
   };
 
   const fileData = () => {
@@ -60,10 +77,28 @@ function InitialInput() {
     <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-xl shadow-md border border-gray-100 font-sans">
       <header className="mb-6 text-center">
         <h3 className="text-2xl font-bold text-gray-900 tracking-tight">File Upload</h3>
-        <p className="text-sm text-gray-500 mt-1">Upload files securely via React</p>
+        <p className="text-sm text-gray-500 mt-1">Upload processed or pre-processed data here.</p>
       </header>
 
       <div className="space-y-4">
+        <div className="flex gap-2" role="group" aria-label="File type">
+          {/* These choices mirror the upload types supported by Kinetics.py. */}
+          <button
+            type="button"
+            onClick={() => setSourceType('preprocessed')}
+            className={`flex-1 py-2 rounded-lg text-sm font-medium ${sourceType === 'preprocessed' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700'}`}
+          >
+            Pre-processed Data (.xlsx)
+          </button>
+          <button
+            type="button"
+            onClick={() => setSourceType('hplc')}
+            className={`flex-1 py-2 rounded-lg text-sm font-medium ${sourceType === 'hplc' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700'}`}
+          >
+            HPLC Data (.xlsx)
+          </button>
+        </div>
+
         <div className="flex flex-col items-center justify-center w-full">
           <label className="w-full flex flex-col items-center px-4 py-6 bg-white rounded-lg border-2 border-dashed border-gray-300 cursor-pointer hover:border-blue-500 hover:bg-gray-50 transition duration-200">
             <svg className="w-8 h-8 text-gray-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -72,24 +107,38 @@ function InitialInput() {
             <span className="text-sm text-gray-600 font-medium">
               {selectedFile ? 'Change file' : 'Select a file'}
             </span>
-            <input 
-              type="file" 
-              className="hidden" 
-              onChange={onFileChange} 
+            <input
+              type="file"
+              className="hidden"
+              // Restrict the picker to the formats accepted for the selected source.
+              accept={sourceType === 'hplc' ? '.xlsx,.xls' : '.csv,.xlsx,.xls'}
+              onChange={onFileChange}
             />
           </label>
         </div>
 
-        <button 
+        <label className="w-full flex flex-col items-center px-4 py-4 bg-white rounded-lg border-2 border-dashed border-gray-300 cursor-pointer hover:border-blue-500 hover:bg-gray-50 transition duration-200">
+          <span className="text-sm text-gray-600 font-medium">
+            {selectedConditionsFile ? selectedConditionsFile.name : 'Select conditions file'}
+          </span>
+          <input
+            type="file"
+            className="hidden"
+            accept=".csv,.xlsx,.xls,.xlsm"
+            onChange={(event) => setSelectedConditionsFile(event.target.files[0] || null)}
+          />
+        </label>
+
+        <button
           onClick={onFileUpload}
-          disabled={!selectedFile}
+          disabled={!selectedFile || !selectedConditionsFile || isUploading}
           className={`w-full py-2.5 px-4 rounded-lg font-medium text-sm text-white shadow transition duration-200 
-            ${selectedFile 
-              ? 'bg-blue-600 hover:bg-blue-700 active:bg-blue-800' 
+            ${selectedFile && !isUploading
+              ? 'bg-blue-600 hover:bg-blue-700 active:bg-blue-800'
               : 'bg-gray-300 cursor-not-allowed'
             }`}
         >
-          Upload!
+          {isUploading ? 'Uploading...' : 'Upload'}
         </button>
       </div>
 
