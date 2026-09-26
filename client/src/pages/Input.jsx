@@ -5,7 +5,7 @@ function InitialInput() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [selectedConditionsFile, setSelectedConditionsFile] = useState(null);
   // Matches the source app's two data paths: ChemStation HPLC or processed data.
-  const [sourceType, setSourceType] = useState('preprocessed');
+  const [sourceIsPreProcessed, setSourceIsPreProcessed] = useState(true);
   const [statusMessage, setStatusMessage] = useState('');
   // Prevents duplicate requests while the selected file is being uploaded.
   const [isUploading, setIsUploading] = useState(false);
@@ -39,7 +39,7 @@ function InitialInput() {
         headers: { 'Content-Type': 'multipart/form-data' },
         body: formData,
         // The backend uses this value to validate the permitted extension.
-        params: { source: sourceType },
+        params: { source: sourceIsPreProcessed },
       })
       setStatusMessage(`Processed ${response.data.rows} rows successfully.`);
     } catch (error) {
@@ -87,15 +87,15 @@ function InitialInput() {
           {/* These choices mirror the upload types supported by Kinetics.py. */}
           <button
             type="button"
-            onClick={() => setSourceType('preprocessed')}
-            className={`flex-1 py-2 rounded-lg text-sm font-medium ${sourceType === 'preprocessed' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700'}`}
+            onClick={() => setSourceIsPreProcessed(true)}
+            className={`flex-1 py-2 rounded-lg text-sm font-medium ${sourceIsPreProcessed ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700'}`}
           >
             Pre-processed Data (.xlsx)
           </button>
           <button
             type="button"
-            onClick={() => setSourceType('hplc')}
-            className={`flex-1 py-2 rounded-lg text-sm font-medium ${sourceType === 'hplc' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700'}`}
+            onClick={() => setSourceIsPreProcessed(false)}
+            className={`flex-1 py-2 rounded-lg text-sm font-medium ${!sourceIsPreProcessed ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700'}`}
           >
             HPLC Data (.xlsx)
           </button>
@@ -113,13 +113,13 @@ function InitialInput() {
               type="file"
               className="hidden"
               // Restrict the picker to the formats accepted for the selected source.
-              accept={sourceType === 'hplc' ? '.xlsx,.xls' : '.csv,.xlsx,.xls'}
+              accept={sourceIsPreProcessed === 'hplc' ? '.xlsx,.xls' : '.csv,.xlsx,.xls'}
               onChange={onFileChange}
             />
           </div>
         </div>
 
-        {sourceType !== "preprocessed" && <div
+        {!sourceIsPreProcessed && <div
           className="w-full flex flex-col items-center px-4 py-4 bg-white rounded-lg border-2 border-dashed border-gray-300 cursor-pointer hover:border-blue-500 hover:bg-gray-50 transition duration-200"
 
         >
