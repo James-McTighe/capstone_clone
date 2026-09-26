@@ -33,6 +33,8 @@ function InitialInput() {
     setStatusMessage('Uploading file...');
     setIsUploading(true);
 
+    console.log('reached the target')
+
     try {
       const response = fetchData('/uploadfile', {
         method: "POST",
@@ -83,25 +85,25 @@ function InitialInput() {
       </header>
 
       <div className="space-y-4">
-        <div className="flex gap-2" role="group" aria-label="File type">
+        <label className="flex gap-2" role="group" aria-label="File type">
           {/* These choices mirror the upload types supported by Kinetics.py. */}
           <button
             type="button"
             onClick={() => setSourceIsPreProcessed(true)}
-            className={`flex-1 py-2 rounded-lg text-sm font-medium ${sourceIsPreProcessed ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700'}`}
+            className={`flex-1 py-2 rounded-lg text-sm font-medium ${sourceIsPreProcessed ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700'}`}
           >
             Pre-processed Data (.xlsx)
           </button>
           <button
             type="button"
             onClick={() => setSourceIsPreProcessed(false)}
-            className={`flex-1 py-2 rounded-lg text-sm font-medium ${!sourceIsPreProcessed ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700'}`}
+            className={`flex-1 py-2 rounded-lg text-sm font-medium ${!sourceIsPreProcessed ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700'}`}
           >
             HPLC Data (.xlsx)
           </button>
-        </div>
+        </label>
 
-        <div className="flex flex-col items-center justify-center w-full">
+        <label className="flex flex-col items-center justify-center w-full">
           <div className="w-full flex flex-col items-center px-4 py-6 bg-white rounded-lg border-2 border-dashed border-gray-300 cursor-pointer hover:border-blue-500 hover:bg-gray-50 transition duration-200">
             <svg className="w-8 h-8 text-gray-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
@@ -117,9 +119,9 @@ function InitialInput() {
               onChange={onFileChange}
             />
           </div>
-        </div>
+        </label>
 
-        {!sourceIsPreProcessed && <div
+        {!sourceIsPreProcessed && <label
           className="w-full flex flex-col items-center px-4 py-4 bg-white rounded-lg border-2 border-dashed border-gray-300 cursor-pointer hover:border-blue-500 hover:bg-gray-50 transition duration-200"
 
         >
@@ -132,11 +134,11 @@ function InitialInput() {
             accept=".csv,.xlsx,.xls,.xlsm"
             onChange={(event) => setSelectedConditionsFile(event.target.files[0] || null)}
           />
-        </div>}
+        </label>}
 
         <button
           onClick={onFileUpload}
-          disabled={!selectedFile || !selectedConditionsFile || isUploading}
+          disabled={!selectedFile}
           className={`w-full py-2.5 px-4 rounded-lg font-medium text-sm text-white shadow transition duration-200 
             ${selectedFile && !isUploading
               ? 'bg-blue-600 hover:bg-blue-700 active:bg-blue-800'
