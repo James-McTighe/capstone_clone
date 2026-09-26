@@ -80,9 +80,17 @@ function InitialInput() {
 
   useEffect(() => {
     if (sourceIsPreProcessed){
-
+      if (selectedFile && !isUploading) {
+        setReadyForUpload(true);
+      } else {
+        setReadyForUpload(false)
+      }
     } else {
-
+      if (selectedFile && selectedConditionsFile && !isUploading){
+        setReadyForUpload(true);
+      } else {
+        setReadyForUpload(false)
+      }
     }
   }, [sourceIsPreProcessed, isUploading, selectedFile, selectedConditionsFile])
   
@@ -150,7 +158,7 @@ function InitialInput() {
           onClick={onFileUpload}
           disabled={readyForUpload}
           className={`w-full py-2.5 px-4 rounded-lg font-medium text-sm text-white shadow transition duration-200 
-            ${selectedFile && !isUploading
+            ${readyForUpload
               ? 'bg-blue-600 hover:bg-blue-700 active:bg-blue-800'
               : 'bg-gray-300 cursor-not-allowed'
             }`}
