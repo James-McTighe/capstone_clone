@@ -1,5 +1,5 @@
-import api from '../api/axios';
 import { useState } from 'react';
+import fetchData from '../services/apiClient'
 
 function InitialInput() {
   const [selectedFile, setSelectedFile] = useState(null);
@@ -34,11 +34,13 @@ function InitialInput() {
     setIsUploading(true);
 
     try {
-      const response = await api.post('/uploadfile', formData, {
+      const response = fetchData('/uploadfile', {
+        method: "POST",
         headers: { 'Content-Type': 'multipart/form-data' },
+        body: formData,
         // The backend uses this value to validate the permitted extension.
         params: { source: sourceType },
-      });
+      })
       setStatusMessage(`Processed ${response.data.rows} rows successfully.`);
     } catch (error) {
       setStatusMessage(
