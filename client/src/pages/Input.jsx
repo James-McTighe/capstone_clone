@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import fetchData from '../services/apiClient'
 
 function InitialInput() {
@@ -9,6 +9,7 @@ function InitialInput() {
   const [statusMessage, setStatusMessage] = useState('');
   // Prevents duplicate requests while the selected file is being uploaded.
   const [isUploading, setIsUploading] = useState(false);
+  const [readyForUpload, setReadyForUpload] = useState(false);
 
   const onFileChange = (event) => {
     setSelectedFile(event.target.files[0] || null);
@@ -77,6 +78,15 @@ function InitialInput() {
     }
   };
 
+  useEffect(() => {
+    if (sourceIsPreProcessed){
+
+    } else {
+
+    }
+  }, [sourceIsPreProcessed, isUploading, selectedFile, selectedConditionsFile])
+  
+
   return (
     <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-xl shadow-md border border-gray-100 font-sans">
       <header className="mb-6 text-center">
@@ -138,7 +148,7 @@ function InitialInput() {
 
         <button
           onClick={onFileUpload}
-          disabled={!selectedFile}
+          disabled={readyForUpload}
           className={`w-full py-2.5 px-4 rounded-lg font-medium text-sm text-white shadow transition duration-200 
             ${selectedFile && !isUploading
               ? 'bg-blue-600 hover:bg-blue-700 active:bg-blue-800'
