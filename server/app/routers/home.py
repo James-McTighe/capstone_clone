@@ -8,21 +8,18 @@ import plotly.io as pio
 from fastapi import APIRouter
 from fastapi.responses import JSONResponse
 
-main_router = APIRouter(prefix="/api/", tags=["Authentication"])
+router = APIRouter(prefix="/home", tags=["Authentication"])
 
 
-@main_router.get("/home")
+@router.get("/")
 def get_home_data():
     HOME_DATA_PATH = Path(__file__).with_name("home-content.json")
     with HOME_DATA_PATH.open("r", encoding="utf-8") as file:
         data = json.load(file)
-    return JSONResponse(
-        status_code=200,
-        content=data
-    )
+    return JSONResponse(status_code=200, content=data)
 
 
-@main_router.get("/api/chart-data")
+@router.get("/chart-data")
 def get_chart_data():
     np.random.seed(42)
     times = pd.date_range(start="2026-01-01", periods=100, freq="h")
