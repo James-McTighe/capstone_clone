@@ -113,7 +113,7 @@ function InitialInput() {
               type="file"
               className="hidden"
               // Restrict the picker to the formats accepted for the selected source.
-              accept={sourceIsPreProcessed === 'hplc' ? '.xlsx,.xls' : '.csv,.xlsx,.xls'}
+              accept={!sourceIsPreProcessed ? '.xlsx,.xls' : '.csv,.xlsx,.xls'}
               onChange={onFileChange}
             />
           </div>
