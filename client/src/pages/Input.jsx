@@ -17,8 +17,6 @@ function InitialInput() {
   };
 
   const onFileUpload = async () => {
-    if (!selectedFile || !selectedConditionsFile) return;
-
     const formData = new FormData();
     // The field name must match the FastAPI alias and the original Flask route.
     formData.append(
@@ -26,11 +24,13 @@ function InitialInput() {
       selectedFile,
       selectedFile.name
     );
-    formData.append(
-      "conditionsFile",
-      selectedConditionsFile,
-      selectedConditionsFile.name
-    );
+    if (!sourceIsPreProcessed) {
+      formData.append(
+        "conditionsFile",
+        selectedConditionsFile,
+        selectedConditionsFile.name
+      );
+    }
     setStatusMessage('Uploading file...');
     setIsUploading(true);
 
@@ -79,21 +79,21 @@ function InitialInput() {
   };
 
   useEffect(() => {
-    if (sourceIsPreProcessed){
+    if (sourceIsPreProcessed) {
       if (selectedFile && !isUploading) {
         setReadyForUpload(true);
       } else {
         setReadyForUpload(false)
       }
     } else {
-      if (selectedFile && selectedConditionsFile && !isUploading){
+      if (selectedFile && selectedConditionsFile && !isUploading) {
         setReadyForUpload(true);
       } else {
         setReadyForUpload(false)
       }
     }
   }, [sourceIsPreProcessed, isUploading, selectedFile, selectedConditionsFile])
-  
+
 
   return (
     <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-xl shadow-md border border-gray-100 font-sans">
@@ -156,7 +156,7 @@ function InitialInput() {
 
         <button
           onClick={onFileUpload}
-          disabled={readyForUpload}
+          disabled={!readyForUpload}
           className={`w-full py-2.5 px-4 rounded-lg font-medium text-sm text-white shadow transition duration-200 
             ${readyForUpload
               ? 'bg-blue-600 hover:bg-blue-700 active:bg-blue-800'
