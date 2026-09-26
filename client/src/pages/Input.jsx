@@ -102,7 +102,7 @@ function InitialInput() {
         </div>
 
         <div className="flex flex-col items-center justify-center w-full">
-          <label className="w-full flex flex-col items-center px-4 py-6 bg-white rounded-lg border-2 border-dashed border-gray-300 cursor-pointer hover:border-blue-500 hover:bg-gray-50 transition duration-200">
+          <div className="w-full flex flex-col items-center px-4 py-6 bg-white rounded-lg border-2 border-dashed border-gray-300 cursor-pointer hover:border-blue-500 hover:bg-gray-50 transition duration-200">
             <svg className="w-8 h-8 text-gray-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
             </svg>
@@ -116,10 +116,15 @@ function InitialInput() {
               accept={sourceType === 'hplc' ? '.xlsx,.xls' : '.csv,.xlsx,.xls'}
               onChange={onFileChange}
             />
-          </label>
+          </div>
         </div>
 
-        <label className="w-full flex flex-col items-center px-4 py-4 bg-white rounded-lg border-2 border-dashed border-gray-300 cursor-pointer hover:border-blue-500 hover:bg-gray-50 transition duration-200">
+        <div 
+          className={sourceType === "preprocessed"
+            ? "w-full flex flex-col items-center px-4 py-4 bg-gray-300 rounded-lg border-gray-300 cursor-pointer line-through transition duration-200"
+            : "w-full flex flex-col items-center px-4 py-4 bg-white rounded-lg border-2 border-dashed border-gray-300 cursor-pointer hover:border-blue-500 hover:bg-gray-50 transition duration-200"
+          }
+        >
           <span className="text-sm text-gray-600 font-medium">
             {selectedConditionsFile ? selectedConditionsFile.name : 'Select conditions file'}
           </span>
@@ -128,8 +133,9 @@ function InitialInput() {
             className="hidden"
             accept=".csv,.xlsx,.xls,.xlsm"
             onChange={(event) => setSelectedConditionsFile(event.target.files[0] || null)}
+            disabled={sourceType === "preprocessed"}
           />
-        </label>
+        </div>
 
         <button
           onClick={onFileUpload}
