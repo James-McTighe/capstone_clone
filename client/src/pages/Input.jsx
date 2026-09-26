@@ -119,11 +119,9 @@ function InitialInput() {
           </div>
         </div>
 
-        <div 
-          className={sourceType === "preprocessed"
-            ? "w-full flex flex-col items-center px-4 py-4 bg-gray-300 rounded-lg border-gray-300 cursor-pointer line-through transition duration-200"
-            : "w-full flex flex-col items-center px-4 py-4 bg-white rounded-lg border-2 border-dashed border-gray-300 cursor-pointer hover:border-blue-500 hover:bg-gray-50 transition duration-200"
-          }
+        {sourceType !== "preprocessed" && <div
+          className="w-full flex flex-col items-center px-4 py-4 bg-white rounded-lg border-2 border-dashed border-gray-300 cursor-pointer hover:border-blue-500 hover:bg-gray-50 transition duration-200"
+
         >
           <span className="text-sm text-gray-600 font-medium">
             {selectedConditionsFile ? selectedConditionsFile.name : 'Select conditions file'}
@@ -133,9 +131,8 @@ function InitialInput() {
             className="hidden"
             accept=".csv,.xlsx,.xls,.xlsm"
             onChange={(event) => setSelectedConditionsFile(event.target.files[0] || null)}
-            disabled={sourceType === "preprocessed"}
           />
-        </div>
+        </div>}
 
         <button
           onClick={onFileUpload}
