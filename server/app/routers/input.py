@@ -1,6 +1,6 @@
 import logging
 
-from fastapi import APIRouter, File, HTTPException, UploadFile
+from fastapi import APIRouter, HTTPException, UploadFile
 from fastapi.responses import JSONResponse
 
 # Set up logging configuration
@@ -11,7 +11,7 @@ router = APIRouter(prefix="/input", tags=["uploads"])
 
 
 @router.post("/uploadfile")
-async def raw_data_input(file: UploadFile = File(...)):
+async def raw_data_input(file: UploadFile):
     if file.filename == "":
         raise HTTPException(status_code=400, detail="Empty filename")
 
