@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import fetchData from '../services/apiClient'
 
 function InitialInput() {
   const [selectedFile, setSelectedFile] = useState(null);
@@ -11,6 +10,14 @@ function InitialInput() {
   const [isUploading, setIsUploading] = useState(false);
   const [readyForUpload, setReadyForUpload] = useState(false);
 
+  //const resetUpload = () => {
+  //setSelectedFile(null);
+  //setSelectedConditionsFile(null);
+  //setStatusMessage('');
+  //setIsUploading(false);
+  //setReadyForUpload(false);
+  //};
+
   const onFileChange = (event) => {
     setSelectedFile(event.target.files[0] || null);
     setStatusMessage('');
@@ -18,18 +25,13 @@ function InitialInput() {
 
   const onFileUpload = async () => {
     const formData = new FormData();
-    // The field name must match the FastAPI alias and the original Flask route.
-    formData.append(
-      "myFile",
-      selectedFile,
-      selectedFile.name
-    );
+
+    formData.append('file', selectedFile, selectedFile.name);
+
+    formData.append('source', sourceIsPreProcessed ? 'preprocessed' : 'hplc');
+
     if (!sourceIsPreProcessed) {
-      formData.append(
-        "conditionsFile",
-        selectedConditionsFile,
-        selectedConditionsFile.name
-      );
+      formData.append('conditionsFile', selectedConditionsFile, selectedConditionsFile.name);
     }
     setStatusMessage('Uploading file...');
     setIsUploading(true);
@@ -37,21 +39,25 @@ function InitialInput() {
     console.log('reached the target')
 
     try {
-      const response = fetchData('/uploadfile', {
-        method: "POST",
-        headers: { 'Content-Type': 'multipart/form-data' },
+      const response = await fetch('/api/input/uploadfile', {
+        method: 'POST',
         body: formData,
-        // The backend uses this value to validate the permitted extension.
-        params: { source: sourceIsPreProcessed },
-      })
-      setStatusMessage(`Processed ${response.data.rows} rows successfully.`);
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.detail || 'Upload failed.');
+      }
+      setStatusMessage(data.message);
     } catch (error) {
-      setStatusMessage(
-        error.response?.data?.detail || 'Upload failed. Check the server logs.'
-      );
+      setStatusMessage(error.message || 'Upload failed. Check the server logs.');
     } finally {
       setIsUploading(false);
     }
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    await onFileUpload();
   };
 
   const fileData = () => {
@@ -102,7 +108,7 @@ function InitialInput() {
         <p className="text-sm text-gray-500 mt-1">Upload processed or pre-processed data here.</p>
       </header>
 
-      <div className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-4">
         <label className="flex gap-2" role="group" aria-label="File type">
           {/* These choices mirror the upload types supported by Kinetics.py. */}
           <button
@@ -155,7 +161,7 @@ function InitialInput() {
         </label>}
 
         <button
-          onClick={onFileUpload}
+          type="submit"
           disabled={!readyForUpload}
           className={`w-full py-2.5 px-4 rounded-lg font-medium text-sm text-white shadow transition duration-200 
             ${readyForUpload
@@ -165,7 +171,7 @@ function InitialInput() {
         >
           {isUploading ? 'Uploading...' : 'Upload'}
         </button>
-      </div>
+      </form>
 
       {statusMessage && (
         <p className="mt-4 text-center text-sm text-gray-600">{statusMessage}</p>
